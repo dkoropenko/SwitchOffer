@@ -32,10 +32,15 @@ public class MainWindow extends JFrame {
     private String osVersion;
 
     public MainWindow (){
+        //Определяем версию ОС
+        osVersion = System.getProperty("os.name");
+
         //Выставляем стандартные настройки
-        setTitle("Switch Offer v: 0.2");
-        setSize(250, 160);
-        //setResizable(false);
+        setTitle("Switch Offer v: 0.3");
+        if (osVersion.equals("Windows XP")) setSize(250, 160);
+        else if (osVersion.equals("Windows 7")) setSize(260, 160);
+        else if (osVersion.equals("Linux")) setSize(270, 160);
+        setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -78,8 +83,6 @@ public class MainWindow extends JFrame {
         hour = new JComboBox();
         minute = new JComboBox();
         action = new JComboBox();
-
-        osVersion = System.getProperty("os.name");
 
         //Заполняем списки элементами
         for (int i = 0; i < hours.length; i++) hour.addItem(hours[i]);

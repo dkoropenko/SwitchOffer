@@ -36,6 +36,7 @@ public class MyActionListener implements ActionListener {
 
             JButton start = (JButton) e.getSource();
             start.setText("Выполняется");
+            setUIstatus(false);
             status = true;
         }
         //Если программа работает, то останавливаем выполнение
@@ -45,7 +46,14 @@ public class MyActionListener implements ActionListener {
 
             JButton start = (JButton) e.getSource();
             start.setText("Пуск");
+            setUIstatus(true);
             status = false;
         }
+    }
+
+    private void setUIstatus(boolean options){
+        hour.setEnabled(options);
+        minutes.setEnabled(options);
+        action.setEnabled(options);
     }
 }
