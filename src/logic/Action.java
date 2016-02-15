@@ -27,8 +27,7 @@ public class Action {
     }
 
     public void doAction(){
-        if (options == 99) System.out.println("Совсем неудачно");
-        else{
+        if (options != 99){
             try {
                 if (osVersion.indexOf("Windows") != -1){
                     Process proc = Runtime.getRuntime().exec(win[options]);

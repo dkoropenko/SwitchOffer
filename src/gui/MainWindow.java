@@ -2,10 +2,10 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 
 /**
  * Created by Koropenkods on 01.02.16.
@@ -33,35 +33,39 @@ public class MainWindow extends JFrame {
 
     public MainWindow (){
         //Определяем версию ОС
-        osVersion = System.getProperty("os.name");
+        osVersion = System.getProperty("os.name").toLowerCase();
 
         //Выставляем стандартные настройки
         setTitle("Switch Offer v: 0.3");
-        if (osVersion.equals("Windows XP")) setSize(250, 160);
-        else if (osVersion.equals("Windows 7")) setSize(260, 160);
-        else if (osVersion.equals("Linux")) setSize(270, 160);
+        if (osVersion.startsWith("win")) setSize(250, 160);
+        else if (osVersion.startsWith("lin")) setSize(260, 160);
+
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Не работает. Надо разобраться почему.
+        //И размеры менял и что только не пробовал.
+        setIconImage(Toolkit.getDefaultToolkit().getImage("images/icon.png"));
+
         //Инициализация UI
-        initGUIConfigureation();
+        initGUIConfiguration();
 
         setVisible(true);
     }
 
-    private void initGUIConfigureation(){
+    private void initGUIConfiguration(){
         time = new JLabel("Время");
         choose = new JLabel("Действие");
 
         time.setPreferredSize(new Dimension(70,15));
         choose.setPreferredSize(new Dimension(70,15));
 
-        prefButtonsSize = new Dimension(110,25);
-
         initComboBox();
 
         //Создаем кнопку и вешаем на нее слушатель
+        prefButtonsSize = new Dimension(110,25);
+
         start = new JButton("Пуск");
         start.setPreferredSize(prefButtonsSize);
         start.addActionListener(new MyActionListener(hour,minute,action));
@@ -90,13 +94,13 @@ public class MainWindow extends JFrame {
 
         //В зависимости от версии ОС показываем определенные возможные действия
         switch (osVersion){
-            case "Windows XP":
+            case "windows xp":
                 for (int i = 0; i < actionOptions.length-1; i++) action.addItem(actionOptions[i]);
                 break;
-            case "Windows 7":
+            case "windows 7":
                 for (int i = 0; i < actionOptions.length; i++) action.addItem(actionOptions[i]);
                 break;
-            case "Linux":
+            case "linux":
                 for (int i = 0; i < actionOptions.length; i++) action.addItem(actionOptions[i]);
                 break;
         }
