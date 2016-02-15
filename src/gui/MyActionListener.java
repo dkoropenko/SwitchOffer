@@ -39,6 +39,7 @@ public class MyActionListener implements ActionListener {
             setUIstatus(false);
             status = true;
         }
+
         //Если программа работает, то останавливаем выполнение
         //и убиваем поток.
         else{
@@ -51,6 +52,8 @@ public class MyActionListener implements ActionListener {
         }
     }
 
+    //Метод для выключения некоторых элементов UI при
+    //включенной программе.
     private void setUIstatus(boolean options){
         hour.setEnabled(options);
         minutes.setEnabled(options);

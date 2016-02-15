@@ -1,47 +1,9 @@
 package logic;
 
-import java.io.IOException;
-
 /**
- * Created by Koropenkods on 03.02.16.
+ * Created by Диман on 15.02.2016.
  */
-public class Action {
-    //переменные для хранения cmd вызовов управлением системой.
-    private String[] win = {"shutdown /s /f",
-            "shutdown /r /f",
-            "shutdown /l /f",
-            "shutdown /h /f",};
-
-    private String[] linux = {"sudo shutdown -h",
-            "sudo shutdown -r",
-            "sudo exit",
-            "sudo pm-suspend"};
-
-    //Опция, выбранная пользователем.
-    private int options = 99;
-    private String osVersion;
-
-    public void setParameter(int options){
-        this.options = options;
-        osVersion = System.getProperty("os.name");
-    }
-
-    public void doAction(){
-        if (options != 99){
-            try {
-                if (osVersion.indexOf("Windows") != -1){
-                    Process proc = Runtime.getRuntime().exec(win[options]);
-                    proc.waitFor();
-                }
-                else{
-                    Process proc = Runtime.getRuntime().exec(linux[options]);
-                    proc.waitFor();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-    }
+public interface Action {
+    public void setParameter(int options);
+    public void doAction();
 }

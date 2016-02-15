@@ -1,10 +1,14 @@
 package gui;
 
+import javafx.application.Application;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
@@ -36,53 +40,27 @@ public class MainWindow extends JFrame {
         osVersion = System.getProperty("os.name").toLowerCase();
 
         //Выставляем стандартные настройки
-        setTitle("Switch Offer v: 0.3");
-        if (osVersion.startsWith("win")) setSize(250, 160);
-        else if (osVersion.startsWith("lin")) setSize(260, 160);
-
+        setTitle("Switch Offer v: 1.0");
+        setSize(250, 160);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Не работает. Надо разобраться почему.
-        //И размеры менял и что только не пробовал.
-        setIconImage(Toolkit.getDefaultToolkit().getImage("images/icon.png"));
-
         //Инициализация UI
-        initGUIConfiguration();
-
-        setVisible(true);
+        initLabels();
+        initComboBox();
+        initButtons();
+        initPanels();
     }
-
-    private void initGUIConfiguration(){
+    //Создаем метки.
+    private void initLabels(){
         time = new JLabel("Время");
         choose = new JLabel("Действие");
 
-        time.setPreferredSize(new Dimension(70,15));
-        choose.setPreferredSize(new Dimension(70,15));
-
-        initComboBox();
-
-        //Создаем кнопку и вешаем на нее слушатель
-        prefButtonsSize = new Dimension(110,25);
-
-        start = new JButton("Пуск");
-        start.setPreferredSize(prefButtonsSize);
-        start.addActionListener(new MyActionListener(hour,minute,action));
-
-        //Добавляем кнопку выход и вешаем на нее слушатель с выходом.
-        exit = new JButton("Закрыть");
-        exit.setPreferredSize(prefButtonsSize);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-
-        initPanels();
+        time.setPreferredSize(new Dimension(70, 15));
+        choose.setPreferredSize(new Dimension(70, 15));
     }
-
+    //Создаем списки времени и опций.
     private void initComboBox(){
         hour = new JComboBox();
         minute = new JComboBox();
@@ -105,7 +83,25 @@ public class MainWindow extends JFrame {
                 break;
         }
     }
+    //Создаем управляющие кнопки.
+    private void initButtons(){
+        //Создаем кнопку и вешаем на нее слушатель
+        prefButtonsSize = new Dimension(110,25);
 
+        start = new JButton("Пуск");
+        start.setPreferredSize(prefButtonsSize);
+        start.addActionListener(new MyActionListener(hour,minute,action));
+
+        //Добавляем кнопку выход и вешаем на нее слушатель с выходом.
+        exit = new JButton("Закрыть");
+        exit.setPreferredSize(prefButtonsSize);
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+    }
     //Раскладываем элементы UI по панелям
     private void initPanels(){
         BorderLayout layout = new BorderLayout(5,5);
@@ -141,7 +137,14 @@ public class MainWindow extends JFrame {
         setContentPane(mainPanel);
     }
 
-    public static void main(String[] args) {
-        MainWindow test = new MainWindow();
+     public void run(){
+        //Не работает. Надо разобраться почему.
+        //И размеры менял и что только не пробовал.
+
+         ImageIcon icon = new ImageIcon("images/icon.png");
+         setIconImage(icon.getImage());
+
+
+        setVisible(true);
     }
 }

@@ -2,15 +2,22 @@ package logic;
 
 import javax.swing.*;
 import java.util.Calendar;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 /**
  * Created by Koropenkods on 02.02.16.
+ * Этот хитрый класс выполняет всю работу программы.
+ * Здесь мы смотрим системное время и сверяем уго с тем временем,
+ * которое ввел пользователь.
+ *
+ * Реализовал паттерн фабрики для добавления разных ОС в дальнейшем.
+ *
+ * Пока реализовано под виндовс машины.
+ * Под линукс не тестировалось.
  */
 public class Main extends Thread{
 
-    //Переменный для хранения UI элементов
+    //Переменные для хранения UI элементов
     private JComboBox hour, minutes, action;
 
     //Переменные для системного времени
@@ -23,13 +30,19 @@ public class Main extends Thread{
     //Проверка на "закрытие" потока.
     private boolean check = true;
 
-    private Action logic;
+    //Переменная для выполнения действия.
+    Action system;
+    //Переменная для управления фабрикой ОС.
+    Factory factory;
+
 
     public Main (JComboBox hour, JComboBox minutes, JComboBox action){
         this.hour = hour;
         this.minutes = minutes;
         this.action = action;
-        logic = new Action();
+
+        //Инициализируем фабрику.
+        factory = new Factory();
 
         //Создаем переменную для храниения системного времени.
         systemTime = Calendar.getInstance();
@@ -37,7 +50,7 @@ public class Main extends Thread{
     }
 
     public void run(){
-        //Берем пользовательское время выключения компьютера
+        //Берем время выключения компьютера, указанное пользователем.
         userHour = hour.getSelectedIndex();
         userMinutes = minutes.getSelectedIndex();
 
@@ -50,9 +63,19 @@ public class Main extends Thread{
                 systemHour = systemTime.get(11);
                 systemMinutes = systemTime.get(12);
 
+                //Если время совпало, то выполняем выбранное действие.
                 if (systemHour == userHour && systemMinutes == userMinutes){
-                    logic.setParameter(action.getSelectedIndex());
-                    logic.doAction();
+                    //Узнаем систему, на которой запущена программа.
+                    String osName = System.getProperty("os.name");
+
+                    //Инициализируем класс из фабрики.
+                    system = factory.getClient(osName);
+                    if (system != null){
+                        system.setParameter(action.getSelectedIndex()); //Указываем действие.
+                        system.doAction(); //Выполняем.
+                    }
+
+                    //Прерываем поток, если что-то пошло не так.
                     this.interrupt();
                 }
             }
